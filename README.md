@@ -1,9 +1,18 @@
-# NVBit (NVidia Binary Instrumentation Tool)
+# NVBit (NVidia Binary Instrumentation Tool) For GPU Tejas
+
+
+This repo is a fork of the original NVBit code provided by Nvidia:
 NVIDIA Corporation
 
 NVBit is covered by the same End User License Agreement as that of the
 NVIDIA CUDA Toolkit. By using NVBit you agree to End User License Agreement
 described in the EULA.txt file.
+
+Additional tools have been added to this repo to be used as a Trace generator for the GPU Simulator [GPUTejas](https://www.cse.iitd.ac.in/tejas/gputejas/index.html). The original NVBit code belongs to Nvidia and its developers.
+
+The trace generator is inspired by a similar implementation by [Accel-Sim](https://accel-sim.github.io/).
+
+Please check the GPUTejas instalation manual learn more.
 
 ## Introduction
 NVBit (NVidia Binary Instrumentation Tool) is a research prototype of a dynamic

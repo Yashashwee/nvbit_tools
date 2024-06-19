@@ -1,4 +1,4 @@
-# NVBit (NVidia Binary Instrumentation Tool) For GPU Tejas
+# NVBit (NVidia Binary Instrumentation Tool) For GPUTejas
 
 
 This repo is a fork of the original NVBit code provided by Nvidia:

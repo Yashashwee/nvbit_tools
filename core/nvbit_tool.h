@@ -80,5 +80,7 @@ extern "C" void nvbit_at_context_init_hook() {
     __nvbit_start();
     load_module_nvbit_kernel<<<1, 1>>>(0);
     cudaDeviceSynchronize();
+    // cudaError_t codeTemp=cudaGetLastError();
+    // printf("CUDA Error code %s\n",cudaGetErrorString(codeTemp));
     assert(cudaGetLastError() == cudaSuccess);
 }

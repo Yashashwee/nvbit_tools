@@ -33,12 +33,11 @@
 extern "C" __device__ __noinline__ void count_instrs(int predicate,
                                                      int count_warp_level,
                                                      uint64_t pcounter) {
-    /* all the active threads will compute the active mask (ballot() is
-     * implemented in utils/utils.h)*/
-    const int active_mask = ballot(1);
+    /* all the active threads will compute the active mask */
+    const int active_mask = __ballot_sync(__activemask(), 1);
 
     /* compute the predicate mask */
-    const int predicate_mask = ballot(predicate);
+    const int predicate_mask = __ballot_sync(__activemask(), predicate);
 
     /* each thread will get a lane id (get_lane_id is implemented in
      * utils/utils.h) */
@@ -55,10 +54,10 @@ extern "C" __device__ __noinline__ void count_instrs(int predicate,
         if (count_warp_level) {
             /* num threads can be zero when accounting for predicates off */
             if (num_threads > 0) {
-                atomicAdd((unsigned long long *)pcounter, 1);
+                atomicAdd((unsigned long long*)pcounter, 1);
             }
         } else {
-            atomicAdd((unsigned long long *)pcounter, num_threads);
+            atomicAdd((unsigned long long*)pcounter, num_threads);
         }
     }
 }

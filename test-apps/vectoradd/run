@@ -1,0 +1,1 @@
+LD_PRELOAD=./tools/mem_trace/mem_trace.so ./test-apps/vectoradd/vectoradd

@@ -88,7 +88,8 @@ void instrument_function_if_needed(CUcontext ctx, CUfunction func) {
         for (auto instr : instrs) {
             if (instr->getIdx() < instr_begin_interval ||
                 instr->getIdx() >= instr_end_interval ||
-                instr->getMemOpType() == Instr::memOpType::NONE) {
+                instr->getMemorySpace() == InstrType::MemorySpace::NONE ||
+                instr->getMemorySpace() == InstrType::MemorySpace::CONSTANT) {
                 continue;
             }
             if (verbose) {
@@ -108,14 +109,14 @@ void instrument_function_if_needed(CUcontext ctx, CUfunction func) {
             /* iterate on the operands */
             for (int i = 0; i < instr->getNumOperands(); i++) {
                 /* get the operand "i" */
-                const Instr::operand_t *op = instr->getOperand(i);
+                const InstrType::operand_t *op = instr->getOperand(i);
 
-                if (op->type == Instr::operandType::MREF) {
+                if (op->type == InstrType::OperandType::MREF) {
                     /* insert call to the instrumentation function with its
                      * arguments */
                     nvbit_insert_call(instr, "instrument_mem", IPOINT_BEFORE);
                     /* predicate value */
-                    nvbit_add_call_arg_pred_val(instr);
+                    nvbit_add_call_arg_guard_pred_val(instr);
                     /* opcode id */
                     nvbit_add_call_arg_const_val32(instr, opcode_id);
                     /* memory reference 64 bit address */

@@ -1,19 +1,11 @@
-# NVBit (NVidia Binary Instrumentation Tool) For GPUTejas
-
-
-This repo is a fork of the original NVBit code provided by Nvidia:
+# NVBit (NVidia Binary Instrumentation Tool)
 NVIDIA Corporation
 
 NVBit is covered by the same End User License Agreement as that of the
 NVIDIA CUDA Toolkit. By using NVBit you agree to End User License Agreement
 described in the EULA.txt file.
 
-Additional tools have been added to this repo to be used as a Trace generator for the GPU Simulator [GPUTejas](https://www.cse.iitd.ac.in/tejas/gputejas/index.html). The original NVBit code belongs to Nvidia and its developers.
-
-The trace generator is inspired by a similar implementation by [Accel-Sim](https://accel-sim.github.io/).
-
-Please check the GPUTejas instalation manual learn more.
-
+For business inquiries, please visit our website and submit the form: [NVIDIA Research Licensing](https://www.nvidia.com/en-us/research/inquiries/)
 ## Introduction
 NVBit (NVidia Binary Instrumentation Tool) is a research prototype of a dynamic
 binary instrumentation library for NVIDIA GPUs.
@@ -44,12 +36,12 @@ used (i.e. nvcc, pgicc, etc).
 
 ## Requirements
 
-* SM compute capability:              >= 3.5 && <= 8.0
+* SM compute capability:              >= 3.5 && <= 8.6
 * Host CPU:                           x86\_64, ppc64le, aarch64
 * OS:                                 Linux
 * GCC version :                       >= 5.3.0 for x86\_64; >= 7.4.0 for ppc64le and aarch64
 * CUDA version:                       >= 10.1
-* CUDA driver version:                <= 450.00
+* CUDA driver version:                <= 510.xx
 
 Currently no Embedded GPUs or ARMs host are supported.
 
@@ -84,7 +76,12 @@ Ubuntu distributions this is typically done by adding /usr/local/cuda/bin or
 /usr/local/cuda-"version"/bin to the PATH environment variable.
 
 To use an NVBit tool we simply LD_PRELOAD the tool before the application
-execution command.
+execution command. Alternatively, you can use CUDA_INJECTION64_PATH instead
+if LD_PRELOAD does not work for you. Because some workloads, such as pytorch
+would overwrite LD_PRELOAD internally, making the NVBit tool not loaded.
+
+NOTE: NVBit uses the same mechanism as nvprof, nsight system, and nsight compute,
+thus they cannot be used together.
 
 For instance if the application vector add runs natively as:
 
@@ -102,6 +99,11 @@ we would use the NVBit tool which performs instruction count as follow:
 
 ```
 LD_PRELOAD=./tools/instr_count/instr_count.so ./test-apps/vectoradd/vectoradd
+```
+
+or
+```
+CUDA_INJECTION64_PATH=./tools/instr_count/instr_count.so ./test-apps/vectoradd/vectoradd
 ```
 
 The output for this command should be the following:
